@@ -14,10 +14,10 @@
 }
 
 body{
-  min-height:100vh;
+  height:100vh;
   background:#0b0f1a;
   color:#fff;
-  overflow:hidden;
+  overflow:hidden; /* locked by default */
 }
 
 /* ===== PASSWORD ===== */
@@ -43,7 +43,6 @@ body{
 .password-box p{
   font-size:16px;
   margin-bottom:15px;
-  letter-spacing:1px;
 }
 
 .password-box input{
@@ -51,9 +50,7 @@ body{
   padding:12px;
   border-radius:20px;
   border:none;
-  outline:none;
   text-align:center;
-  font-size:16px;
 }
 
 .password-box button{
@@ -119,14 +116,11 @@ body{
   padding:14px 32px;
   border-radius:40px;
   border:1px solid rgba(255,255,255,0.4);
-  font-size:16px;
   animation:pulse 1.6s infinite;
 }
 
 @keyframes pulse{
-  0%{transform:scale(1)}
   50%{transform:scale(1.08)}
-  100%{transform:scale(1)}
 }
 
 /* ===== POPUP ===== */
@@ -144,55 +138,44 @@ body{
   border-radius:30px;
   background:rgba(255,255,255,0.12);
   backdrop-filter:blur(14px);
-  font-size:20px;
 }
 
-/* ===== LETTER ===== */
+/* ===== LETTER PAGE (SCROLL FIX) ===== */
 .letter-page{
+  position:fixed;
+  inset:0;
   display:none;
-  min-height:100vh;
-  justify-content:center;
-  align-items:flex-start;
+  overflow-y:auto;     /* ✅ scroll enabled */
+  -webkit-overflow-scrolling:touch;
   padding:20px;
-  overflow-y:auto;
+}
+
+/* unlock body scroll visually */
+.letter-page.active{
+  display:block;
 }
 
 .envelope{
-  position:relative;
-  width:100%;
   max-width:720px;
+  margin:40px auto;
   background:#1a1f33;
   border-radius:18px;
   overflow:hidden;
-  margin-top:40px;
 }
 
 .flap{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
   height:120px;
   background:#222850;
-  transform-origin:top;
   animation:openFlap 1.2s ease forwards;
 }
 
 @keyframes openFlap{
-  from{transform:rotateX(0)}
   to{transform:rotateX(160deg)}
 }
 
 .paper{
-  margin-top:120px;
-  background:rgba(255,255,255,0.08);
   padding:28px;
-  animation:slidePaper 1.4s ease forwards;
-}
-
-@keyframes slidePaper{
-  from{opacity:0}
-  to{opacity:1}
+  background:rgba(255,255,255,0.08);
 }
 
 .letter-text{
@@ -202,24 +185,31 @@ body{
 .signature{
   margin-top:25px;
   font-size:20px;
-  font-weight:600;
+}
+
+/* ===== SCROLL HINT ===== */
+.scroll-hint{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:13px;
+  opacity:0.8;
 }
 
 /* ===== MOON & STARS ===== */
 .star,.moon{
   position:absolute;
   bottom:-20px;
-  pointer-events:none;
   animation:float 7s linear forwards;
 }
 
 @keyframes float{
-  0%{transform:translateY(0);opacity:1}
-  100%{transform:translateY(-1000px);opacity:0}
+  to{transform:translateY(-1000px);opacity:0}
 }
 
-.star{font-size:14px;opacity:0.8;}
-.moon{font-size:22px;opacity:0.9;}
+.star{font-size:14px;}
+.moon{font-size:22px;}
 </style>
 </head>
 
@@ -229,7 +219,7 @@ body{
 <div class="password-page" id="passwordPage">
   <div class="password-box" id="passwordBox">
     <p>WHAT’S MY FAVOURITE THING ABOUT YOU</p>
-    <input type="password" id="passwordInput" placeholder="answer">
+    <input type="password" id="passwordInput">
     <button onclick="checkPassword()">enter</button>
     <div class="hint" id="hint">I always get lost in them 🌙</div>
   </div>
@@ -255,37 +245,27 @@ body{
     <div class="paper">
       <div class="letter-text">
         I love you more than I've loved anyone in my life or family.<br><br>
-
         The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
-
         Don't even know what to say but I've fallen so hard.<br><br>
-
         The truth is I fucking LOVE YOU.<br><br>
-
         I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
-
         When you text, send a video, or send a picture, my heart skips a beat.<br><br>
-
         I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
-
         I love you so much. I'm in love 💗
-
-        <div class="signature">
-          With love,<br>chazziii
-        </div>
+        <div class="signature">With love,<br>chazziii</div>
       </div>
     </div>
   </div>
 </div>
 
+<div class="scroll-hint" id="scrollHint">scroll to read ↓</div>
+
 <script>
-let attempts = 0;
-let locked = false;
+let attempts = 0, locked = false;
 
 function checkPassword(){
   if(locked) return;
-  const val = passwordInput.value.trim();
-  if(val === "eyes"){
+  if(passwordInput.value === "eyes"){
     passwordPage.style.display="none";
     cover.style.display="flex";
     return;
@@ -293,15 +273,7 @@ function checkPassword(){
   attempts++;
   passwordBox.classList.add("shake");
   setTimeout(()=>passwordBox.classList.remove("shake"),400);
-  if(attempts >= 2) hint.style.display="block";
-  if(attempts >= 5){
-    locked = true;
-    hint.innerText = "wait 10 seconds 🌙";
-    setTimeout(()=>{
-      locked=false; attempts=0; hint.style.display="none";
-      hint.innerText="I always get lost in them 🌙";
-    },10000);
-  }
+  if(attempts>=2) hint.style.display="block";
 }
 
 function showPopup(){
@@ -311,10 +283,15 @@ function showPopup(){
 
 function openLetter(){
   popup.style.display="none";
-  letterPage.style.display="flex";
+  letterPage.classList.add("active");
+  scrollHint.style.display="block";
   setInterval(createStar,350);
   setInterval(createMoon,2200);
 }
+
+letterPage.addEventListener("scroll",()=>{
+  scrollHint.style.display="none";
+});
 
 function createStar(){
   const s=document.createElement("div");
@@ -336,4 +313,4 @@ function createMoon(){
 </script>
 
 </body>
-  </html>
+    </html>
