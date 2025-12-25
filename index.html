@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -147,28 +147,24 @@ body{
   font-size:20px;
 }
 
-/* ===== LETTER ENVELOPE ===== */
+/* ===== LETTER ===== */
 .letter-page{
   display:none;
   min-height:100vh;
   justify-content:center;
-  align-items:center;
+  align-items:flex-start;
+  padding:20px;
+  overflow-y:auto;
 }
 
 .envelope{
   position:relative;
-  width:90%;
-  max-width:700px;
-  height:260px;
+  width:100%;
+  max-width:720px;
   background:#1a1f33;
   border-radius:18px;
   overflow:hidden;
-  animation:envelopeRise 1s ease forwards;
-}
-
-@keyframes envelopeRise{
-  from{transform:translateY(40px);opacity:0}
-  to{transform:translateY(0);opacity:1}
+  margin-top:40px;
 }
 
 .flap{
@@ -176,11 +172,10 @@ body{
   top:0;
   left:0;
   width:100%;
-  height:50%;
+  height:120px;
   background:#222850;
   transform-origin:top;
   animation:openFlap 1.2s ease forwards;
-  animation-delay:0.8s;
 }
 
 @keyframes openFlap{
@@ -189,31 +184,19 @@ body{
 }
 
 .paper{
-  position:absolute;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:100%;
+  margin-top:120px;
   background:rgba(255,255,255,0.08);
   padding:28px;
-  transform:translateY(100%);
   animation:slidePaper 1.4s ease forwards;
-  animation-delay:2s;
 }
 
 @keyframes slidePaper{
-  to{transform:translateY(0)}
+  from{opacity:0}
+  to{opacity:1}
 }
 
 .letter-text{
-  opacity:0;
-  animation:fadeText 1.2s ease forwards;
-  animation-delay:3.2s;
   line-height:1.8;
-}
-
-@keyframes fadeText{
-  to{opacity:1}
 }
 
 .signature{
@@ -272,14 +255,24 @@ body{
     <div class="paper">
       <div class="letter-text">
         I love you more than I've loved anyone in my life or family.<br><br>
+
         The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
+
         Don't even know what to say but I've fallen so hard.<br><br>
+
         The truth is I fucking LOVE YOU.<br><br>
+
         I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
+
         When you text, send a video, or send a picture, my heart skips a beat.<br><br>
+
         I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
+
         I love you so much. I'm in love 💗
-        <div class="signature">With love,<br>chazziii</div>
+
+        <div class="signature">
+          With love,<br>chazziii
+        </div>
       </div>
     </div>
   </div>
