@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Only For You 💗</title>
+<title>Only For You</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -15,12 +15,12 @@
 
 body{
   min-height:100vh;
-  background:#0d0d0d;
+  background:#0b0f1a;
   color:#fff;
   overflow:hidden;
 }
 
-/* ===== COVER PAGE ===== */
+/* ===== COVER ===== */
 .cover{
   position:fixed;
   inset:0;
@@ -29,7 +29,6 @@ body{
   align-items:center;
   flex-direction:column;
   text-align:center;
-  animation:fadeIn 1.5s ease;
 }
 
 .cover::after{
@@ -37,7 +36,7 @@ body{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.85)),
+    radial-gradient(circle at center, rgba(0,0,0,0.25), rgba(0,0,0,0.9)),
     url('cover.jpg');
   background-size:cover;
   background-position:center;
@@ -48,14 +47,13 @@ body{
   z-index:2;
   font-size:22px;
   letter-spacing:2px;
-  opacity:0.9;
 }
 
 .tap{
   margin-top:25px;
   padding:14px 32px;
   border-radius:40px;
-  border:1px solid rgba(255,255,255,0.5);
+  border:1px solid rgba(255,255,255,0.4);
   font-size:16px;
   animation:pulse 1.6s infinite;
 }
@@ -66,30 +64,87 @@ body{
   100%{transform:scale(1)}
 }
 
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-
 /* ===== POPUP ===== */
 .popup{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.88);
-  display:flex;
+  background:rgba(5,8,20,0.9);
+  display:none;
   justify-content:center;
   align-items:center;
-  text-align:center;
-  z-index:10;
-  animation:fadeIn 0.8s ease;
 }
 
 .popup-box{
   padding:30px;
   border-radius:30px;
-  background:rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.12);
   backdrop-filter:blur(14px);
   font-size:20px;
+}
+
+/* ===== PASSWORD ===== */
+.password-page{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(5,8,20,0.95);
+  justify-content:center;
+  align-items:center;
+}
+
+.password-box{
+  padding:30px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(14px);
+  width:90%;
+  max-width:320px;
+  text-align:center;
+}
+
+.password-box p{
+  margin-bottom:12px;
+  font-size:16px;
+  letter-spacing:1px;
+}
+
+.password-box input{
+  width:100%;
+  padding:12px;
+  border-radius:20px;
+  border:none;
+  outline:none;
+  text-align:center;
+  font-size:16px;
+}
+
+.password-box button{
+  margin-top:14px;
+  padding:10px 22px;
+  border:none;
+  border-radius:25px;
+  background:#ffffff;
+  color:#000;
+  font-weight:600;
+}
+
+.hint{
+  margin-top:10px;
+  font-size:13px;
+  opacity:0.7;
+  display:none;
+}
+
+.shake{
+  animation:shake 0.4s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
 }
 
 /* ===== LETTER ===== */
@@ -103,16 +158,10 @@ body{
 
 .letter{
   max-width:700px;
-  background:rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.08);
   border-radius:28px;
   padding:28px;
   line-height:1.8;
-  animation:rise 1.2s ease;
-}
-
-@keyframes rise{
-  from{opacity:0;transform:translateY(40px)}
-  to{opacity:1;transform:translateY(0)}
 }
 
 .signature{
@@ -121,18 +170,21 @@ body{
   font-weight:600;
 }
 
-/* ===== FLOATING ===== */
-.heart,.flower{
+/* ===== MOON & STARS ===== */
+.star,.moon{
   position:absolute;
   bottom:-20px;
   pointer-events:none;
-  animation:float 6s linear forwards;
+  animation:float 7s linear forwards;
 }
 
 @keyframes float{
-  0%{transform:translateY(0) scale(1);opacity:1}
-  100%{transform:translateY(-900px) scale(1.5);opacity:0}
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(-1000px);opacity:0}
 }
+
+.star{font-size:14px;opacity:0.8;}
+.moon{font-size:22px;opacity:0.9;}
 </style>
 </head>
 
@@ -141,15 +193,23 @@ body{
 <!-- COVER -->
 <div class="cover" id="cover" onclick="showPopup()">
   <div class="cover-text">
-    Us, even in shadows 💗
+    Us, under the same moon
     <div class="tap">tap</div>
   </div>
 </div>
 
 <!-- POPUP -->
-<div class="popup" id="popup" style="display:none;" onclick="openLetter()">
-  <div class="popup-box">
-    For you 🌼💗
+<div class="popup" id="popup" onclick="showPassword()">
+  <div class="popup-box">For you 🌙</div>
+</div>
+
+<!-- PASSWORD -->
+<div class="password-page" id="passwordPage">
+  <div class="password-box" id="passwordBox">
+    <p>WHAT’S MY FAVOURITE THING ABOUT YOU</p>
+    <input type="password" id="passwordInput" placeholder="answer">
+    <button onclick="checkPassword()">enter</button>
+    <div class="hint" id="hint">I always get lost in them 🌙</div>
   </div>
 </div>
 
@@ -157,65 +217,79 @@ body{
 <div class="letter-page" id="letterPage">
   <div class="letter">
     I love you more than I've loved anyone in my life or family.<br><br>
-
     The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
-
     Don't even know what to say but I've fallen so hard.<br><br>
-
     The truth is I fucking LOVE YOU.<br><br>
-
     I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
-
     When you text, send a video, or send a picture, my heart skips a beat.<br><br>
-
     I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
-
-    I love you so much. I'm in love 💗
-
-    <div class="signature">
-      With love,<br>chazziii 💗
-    </div>
+    I love you so much. I'm in love.
+    <div class="signature">With love,<br>chazziii</div>
   </div>
 </div>
 
 <script>
+let attempts = 0;
+let locked = false;
+
 function showPopup(){
-  document.getElementById("cover").style.display="none";
-  document.getElementById("popup").style.display="flex";
-  burst();
+  cover.style.display="none";
+  popup.style.display="flex";
 }
 
-function openLetter(){
-  document.getElementById("popup").style.display="none";
-  document.getElementById("letterPage").style.display="flex";
-  setInterval(createHeart,400);
-  setInterval(createFlower,700);
-  if(navigator.vibrate) navigator.vibrate([100,50,100]);
+function showPassword(){
+  popup.style.display="none";
+  passwordPage.style.display="flex";
 }
 
-function createHeart(){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💗";
-  h.style.left=Math.random()*100+"vw";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-}
+function checkPassword(){
+  if(locked) return;
 
-function createFlower(){
-  const f=document.createElement("div");
-  f.className="flower";
-  f.innerHTML="🌼";
-  f.style.left=Math.random()*100+"vw";
-  document.body.appendChild(f);
-  setTimeout(()=>f.remove(),6000);
-}
-
-function burst(){
-  for(let i=0;i<15;i++){
-    createHeart();
-    createFlower();
+  const val = passwordInput.value.trim();
+  if(val === "eyes"){
+    passwordPage.style.display="none";
+    letterPage.style.display="flex";
+    setInterval(createStar,350);
+    setInterval(createMoon,2200);
+    return;
   }
+
+  attempts++;
+  passwordBox.classList.add("shake");
+  setTimeout(()=>passwordBox.classList.remove("shake"),400);
+
+  if(attempts >= 2){
+    hint.style.display="block";
+  }
+
+  if(attempts >= 5){
+    locked = true;
+    hint.innerText = "Take a breath… try again in 10 seconds 🌙";
+    setTimeout(()=>{
+      locked = false;
+      attempts = 0;
+      hint.style.display="none";
+      hint.innerText = "I always get lost in them 🌙";
+    },10000);
+  }
+}
+
+function createStar(){
+  const s=document.createElement("div");
+  s.className="star";
+  s.innerHTML="✦";
+  s.style.left=Math.random()*100+"vw";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),7000);
+}
+
+function createMoon(){
+  const m=document.createElement("div");
+  m.className="moon";
+  m.innerHTML="🌙";
+  m.style.left=Math.random()*100+"vw";
+  document.body.appendChild(m);
+  setTimeout(()=>m.remove(),7000);
 }
 </script>
 
