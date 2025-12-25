@@ -17,7 +17,7 @@ body{
   height:100vh;
   background:#0b0f1a;
   color:#fff;
-  overflow:hidden; /* locked by default */
+  overflow:hidden;
 }
 
 /* ===== PASSWORD ===== */
@@ -137,22 +137,16 @@ body{
   padding:30px;
   border-radius:30px;
   background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(14px);
 }
 
-/* ===== LETTER PAGE (SCROLL FIX) ===== */
+/* ===== LETTER PAGE ===== */
 .letter-page{
   position:fixed;
   inset:0;
   display:none;
-  overflow-y:auto;     /* ✅ scroll enabled */
+  overflow-y:auto;
   -webkit-overflow-scrolling:touch;
   padding:20px;
-}
-
-/* unlock body scroll visually */
-.letter-page.active{
-  display:block;
 }
 
 .envelope{
@@ -187,13 +181,18 @@ body{
   font-size:20px;
 }
 
-/* ===== SCROLL HINT ===== */
+/* ===== SCROLL HINT (FIXED) ===== */
 .scroll-hint{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
+  position:sticky;
+  top:10px;
+  text-align:center;
   font-size:13px;
+  opacity:0;
+  transition:opacity 0.5s ease;
+  margin-bottom:15px;
+}
+
+.scroll-hint.show{
   opacity:0.8;
 }
 
@@ -240,6 +239,8 @@ body{
 
 <!-- LETTER -->
 <div class="letter-page" id="letterPage">
+  <div class="scroll-hint" id="scrollHint">scroll to read ↓</div>
+
   <div class="envelope">
     <div class="flap"></div>
     <div class="paper">
@@ -258,14 +259,11 @@ body{
   </div>
 </div>
 
-<div class="scroll-hint" id="scrollHint">scroll to read ↓</div>
-
 <script>
-let attempts = 0, locked = false;
+let attempts=0;
 
 function checkPassword(){
-  if(locked) return;
-  if(passwordInput.value === "eyes"){
+  if(passwordInput.value==="eyes"){
     passwordPage.style.display="none";
     cover.style.display="flex";
     return;
@@ -283,14 +281,18 @@ function showPopup(){
 
 function openLetter(){
   popup.style.display="none";
-  letterPage.classList.add("active");
-  scrollHint.style.display="block";
+  letterPage.style.display="block";
+
+  setTimeout(()=>{
+    scrollHint.classList.add("show");
+  },1500);
+
   setInterval(createStar,350);
   setInterval(createMoon,2200);
 }
 
 letterPage.addEventListener("scroll",()=>{
-  scrollHint.style.display="none";
+  scrollHint.style.opacity="0";
 });
 
 function createStar(){
@@ -313,4 +315,4 @@ function createMoon(){
 </script>
 
 </body>
-    </html>
+  </html>
