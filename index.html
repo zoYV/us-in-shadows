@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Only For You 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:#0d0d0d;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* ===== COVER PAGE ===== */
+.cover{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  animation:fadeIn 1.5s ease;
+}
+
+.cover::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.85)),
+    url('cover.jpg');
+  background-size:cover;
+  background-position:center;
+}
+
+.cover-text{
+  position:relative;
+  z-index:2;
+  font-size:22px;
+  letter-spacing:2px;
+  opacity:0.9;
+}
+
+.tap{
+  margin-top:25px;
+  padding:14px 32px;
+  border-radius:40px;
+  border:1px solid rgba(255,255,255,0.5);
+  font-size:16px;
+  animation:pulse 1.6s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* ===== POPUP ===== */
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.88);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  z-index:10;
+  animation:fadeIn 0.8s ease;
+}
+
+.popup-box{
+  padding:30px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(14px);
+  font-size:20px;
+}
+
+/* ===== LETTER ===== */
+.letter-page{
+  display:none;
+  min-height:100vh;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.letter{
+  max-width:700px;
+  background:rgba(255,255,255,0.12);
+  border-radius:28px;
+  padding:28px;
+  line-height:1.8;
+  animation:rise 1.2s ease;
+}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.signature{
+  margin-top:25px;
+  font-size:20px;
+  font-weight:600;
+}
+
+/* ===== FLOATING ===== */
+.heart,.flower{
+  position:absolute;
+  bottom:-20px;
+  pointer-events:none;
+  animation:float 6s linear forwards;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) scale(1);opacity:1}
+  100%{transform:translateY(-900px) scale(1.5);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- COVER -->
+<div class="cover" id="cover" onclick="showPopup()">
+  <div class="cover-text">
+    Us, even in shadows 💗
+    <div class="tap">tap</div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup" style="display:none;" onclick="openLetter()">
+  <div class="popup-box">
+    For you 🌼💗
+  </div>
+</div>
+
+<!-- LETTER -->
+<div class="letter-page" id="letterPage">
+  <div class="letter">
+    I love you more than I've loved anyone in my life or family.<br><br>
+
+    The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
+
+    Don't even know what to say but I've fallen so hard.<br><br>
+
+    The truth is I fucking LOVE YOU.<br><br>
+
+    I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
+
+    When you text, send a video, or send a picture, my heart skips a beat.<br><br>
+
+    I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
+
+    I love you so much. I'm in love 💗
+
+    <div class="signature">
+      With love,<br>chazziii 💗
+    </div>
+  </div>
+</div>
+
+<script>
+function showPopup(){
+  document.getElementById("cover").style.display="none";
+  document.getElementById("popup").style.display="flex";
+  burst();
+}
+
+function openLetter(){
+  document.getElementById("popup").style.display="none";
+  document.getElementById("letterPage").style.display="flex";
+  setInterval(createHeart,400);
+  setInterval(createFlower,700);
+  if(navigator.vibrate) navigator.vibrate([100,50,100]);
+}
+
+function createHeart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💗";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+
+function createFlower(){
+  const f=document.createElement("div");
+  f.className="flower";
+  f.innerHTML="🌼";
+  f.style.left=Math.random()*100+"vw";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),6000);
+}
+
+function burst(){
+  for(let i=0;i<15;i++){
+    createHeart();
+    createFlower();
+  }
+}
+</script>
+
+</body>
+</html>
