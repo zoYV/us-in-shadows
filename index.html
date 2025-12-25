@@ -20,11 +20,76 @@ body{
   overflow:hidden;
 }
 
+/* ===== PASSWORD ===== */
+.password-page{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(180deg,#050814,#0b0f1a);
+}
+
+.password-box{
+  padding:30px;
+  border-radius:30px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(14px);
+  width:90%;
+  max-width:330px;
+  text-align:center;
+}
+
+.password-box p{
+  font-size:16px;
+  margin-bottom:15px;
+  letter-spacing:1px;
+}
+
+.password-box input{
+  width:100%;
+  padding:12px;
+  border-radius:20px;
+  border:none;
+  outline:none;
+  text-align:center;
+  font-size:16px;
+}
+
+.password-box button{
+  margin-top:15px;
+  padding:10px 24px;
+  border:none;
+  border-radius:25px;
+  background:#fff;
+  color:#000;
+  font-weight:600;
+}
+
+.hint{
+  margin-top:10px;
+  font-size:13px;
+  opacity:0.7;
+  display:none;
+}
+
+.shake{
+  animation:shake 0.4s;
+}
+
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  50%{transform:translateX(6px)}
+  75%{transform:translateX(-6px)}
+  100%{transform:translateX(0)}
+}
+
 /* ===== COVER ===== */
 .cover{
   position:fixed;
   inset:0;
-  display:flex;
+  display:none;
   justify-content:center;
   align-items:center;
   flex-direction:column;
@@ -68,10 +133,10 @@ body{
 .popup{
   position:fixed;
   inset:0;
-  background:rgba(5,8,20,0.9);
   display:none;
   justify-content:center;
   align-items:center;
+  background:rgba(5,8,20,0.9);
 }
 
 .popup-box{
@@ -82,86 +147,73 @@ body{
   font-size:20px;
 }
 
-/* ===== PASSWORD ===== */
-.password-page{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(5,8,20,0.95);
-  justify-content:center;
-  align-items:center;
-}
-
-.password-box{
-  padding:30px;
-  border-radius:30px;
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(14px);
-  width:90%;
-  max-width:320px;
-  text-align:center;
-}
-
-.password-box p{
-  margin-bottom:12px;
-  font-size:16px;
-  letter-spacing:1px;
-}
-
-.password-box input{
-  width:100%;
-  padding:12px;
-  border-radius:20px;
-  border:none;
-  outline:none;
-  text-align:center;
-  font-size:16px;
-}
-
-.password-box button{
-  margin-top:14px;
-  padding:10px 22px;
-  border:none;
-  border-radius:25px;
-  background:#ffffff;
-  color:#000;
-  font-weight:600;
-}
-
-.hint{
-  margin-top:10px;
-  font-size:13px;
-  opacity:0.7;
-  display:none;
-}
-
-.shake{
-  animation:shake 0.4s;
-}
-
-@keyframes shake{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-6px)}
-  50%{transform:translateX(6px)}
-  75%{transform:translateX(-6px)}
-  100%{transform:translateX(0)}
-}
-
-/* ===== LETTER ===== */
+/* ===== LETTER ENVELOPE ===== */
 .letter-page{
   display:none;
   min-height:100vh;
   justify-content:center;
   align-items:center;
-  padding:20px;
 }
 
-.letter{
+.envelope{
+  position:relative;
+  width:90%;
   max-width:700px;
+  height:260px;
+  background:#1a1f33;
+  border-radius:18px;
+  overflow:hidden;
+  animation:envelopeRise 1s ease forwards;
+}
+
+@keyframes envelopeRise{
+  from{transform:translateY(40px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.flap{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:50%;
+  background:#222850;
+  transform-origin:top;
+  animation:openFlap 1.2s ease forwards;
+  animation-delay:0.8s;
+}
+
+@keyframes openFlap{
+  from{transform:rotateX(0)}
+  to{transform:rotateX(160deg)}
+}
+
+.paper{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:100%;
   background:rgba(255,255,255,0.08);
-  border-radius:28px;
   padding:28px;
+  transform:translateY(100%);
+  animation:slidePaper 1.4s ease forwards;
+  animation-delay:2s;
+}
+
+@keyframes slidePaper{
+  to{transform:translateY(0)}
+}
+
+.letter-text{
+  opacity:0;
+  animation:fadeText 1.2s ease forwards;
+  animation-delay:3.2s;
   line-height:1.8;
+}
+
+@keyframes fadeText{
+  to{opacity:1}
 }
 
 .signature{
@@ -190,19 +242,6 @@ body{
 
 <body>
 
-<!-- COVER -->
-<div class="cover" id="cover" onclick="showPopup()">
-  <div class="cover-text">
-    Us, under the same moon
-    <div class="tap">tap</div>
-  </div>
-</div>
-
-<!-- POPUP -->
-<div class="popup" id="popup" onclick="showPassword()">
-  <div class="popup-box">For you 🌙</div>
-</div>
-
 <!-- PASSWORD -->
 <div class="password-page" id="passwordPage">
   <div class="password-box" id="passwordBox">
@@ -213,18 +252,36 @@ body{
   </div>
 </div>
 
+<!-- COVER -->
+<div class="cover" id="cover" onclick="showPopup()">
+  <div class="cover-text">
+    Us, under the same moon
+    <div class="tap">tap</div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup" onclick="openLetter()">
+  <div class="popup-box">For you 🌙</div>
+</div>
+
 <!-- LETTER -->
 <div class="letter-page" id="letterPage">
-  <div class="letter">
-    I love you more than I've loved anyone in my life or family.<br><br>
-    The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
-    Don't even know what to say but I've fallen so hard.<br><br>
-    The truth is I fucking LOVE YOU.<br><br>
-    I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
-    When you text, send a video, or send a picture, my heart skips a beat.<br><br>
-    I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
-    I love you so much. I'm in love.
-    <div class="signature">With love,<br>chazziii</div>
+  <div class="envelope">
+    <div class="flap"></div>
+    <div class="paper">
+      <div class="letter-text">
+        I love you more than I've loved anyone in my life or family.<br><br>
+        The way I feel for you is rare, and honestly it scares me a little because I don't want to lose you.<br><br>
+        Don't even know what to say but I've fallen so hard.<br><br>
+        The truth is I fucking LOVE YOU.<br><br>
+        I've never felt like this before. I smile every time your name pops up, and I'd drop everything just to hear your voice.<br><br>
+        When you text, send a video, or send a picture, my heart skips a beat.<br><br>
+        I can't wait for the day I tell you this looking straight into your eyes. I can't wait to fall asleep in your arms, to cuddle through movie nights, to lie under blankets in your backyard and stare at the stars while we hold each other.<br><br>
+        I love you so much. I'm in love 💗
+        <div class="signature">With love,<br>chazziii</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -232,46 +289,38 @@ body{
 let attempts = 0;
 let locked = false;
 
+function checkPassword(){
+  if(locked) return;
+  const val = passwordInput.value.trim();
+  if(val === "eyes"){
+    passwordPage.style.display="none";
+    cover.style.display="flex";
+    return;
+  }
+  attempts++;
+  passwordBox.classList.add("shake");
+  setTimeout(()=>passwordBox.classList.remove("shake"),400);
+  if(attempts >= 2) hint.style.display="block";
+  if(attempts >= 5){
+    locked = true;
+    hint.innerText = "wait 10 seconds 🌙";
+    setTimeout(()=>{
+      locked=false; attempts=0; hint.style.display="none";
+      hint.innerText="I always get lost in them 🌙";
+    },10000);
+  }
+}
+
 function showPopup(){
   cover.style.display="none";
   popup.style.display="flex";
 }
 
-function showPassword(){
+function openLetter(){
   popup.style.display="none";
-  passwordPage.style.display="flex";
-}
-
-function checkPassword(){
-  if(locked) return;
-
-  const val = passwordInput.value.trim();
-  if(val === "eyes"){
-    passwordPage.style.display="none";
-    letterPage.style.display="flex";
-    setInterval(createStar,350);
-    setInterval(createMoon,2200);
-    return;
-  }
-
-  attempts++;
-  passwordBox.classList.add("shake");
-  setTimeout(()=>passwordBox.classList.remove("shake"),400);
-
-  if(attempts >= 2){
-    hint.style.display="block";
-  }
-
-  if(attempts >= 5){
-    locked = true;
-    hint.innerText = "Take a breath… try again in 10 seconds 🌙";
-    setTimeout(()=>{
-      locked = false;
-      attempts = 0;
-      hint.style.display="none";
-      hint.innerText = "I always get lost in them 🌙";
-    },10000);
-  }
+  letterPage.style.display="flex";
+  setInterval(createStar,350);
+  setInterval(createMoon,2200);
 }
 
 function createStar(){
@@ -294,4 +343,4 @@ function createMoon(){
 </script>
 
 </body>
-</html>
+  </html>
